@@ -6,22 +6,26 @@
 		<link media="screen" href="main.css" rel="stylesheet"/>
 	</head>
 	<body>
-		<section class="login-page hidden">
+		<section class="login-page">
+			LOGIN
 			<input type="text" id="username" value="">
 			<input type="button" id="submitname" value="submit">
 		</section>
-		<section class="chat-page">
+		<section class="chat-page hidden">
 			<div class="chatwindow">
-				<div class="message" data-id="input">
+				<!-- <div class="message" data-id="input">
 					<h3>username</h3>
 					<p>
 						test text blah blah
 					</p>
 					<input type="button" class="delete" value="delete">
-				</div>
+				</div> -->
 			</div>
-			<input type="text" id="newmessage" value="">
-			<input type="button" id="submitmessage" value="submit">
+			<footer>
+				NEW MESSAGE
+				<input type="text" id="newmessage" value="">
+				<input type="button" id="submitmessage" value="submit">
+			</footer>
 		</section>
 		<script src="main.js" charset="utf-8"></script>
 	</body>
