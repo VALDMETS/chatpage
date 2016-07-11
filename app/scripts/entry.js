@@ -1,33 +1,11 @@
 import $ from 'jquery';
-// import moment from 'moment';
-// import Session from './session';
-// import Message from './messagetemplate';
-// import _ from './messageaction';
-// import login from './login';
-// import _ from './chat';
+import moment from 'moment';
+import currentLogin from './models/login.js';
+import './models/messagefetch.js';
+import Message from './models/messagetemplate.js';
 
-let currentLogin = '';
+let now = moment().format();
 
-var moment = require('moment');
-moment().format();
-
-var now = moment();
-console.dir(moment());
-function Login(name) {
-    this.name = name;
-    $.ajax({
-      url: 'http://tiny-za-server.herokuapp.com/collections/benscoolchat',
-      type: 'GET',
-      dataType: 'json',
-      success: getMessages
-    });
-}
-function Message(name, body, timestamp) {
-    this.name = name;
-    this.body = body;
-    this.timestamp = timestamp;
-    this._id = '';
-}
 function getMessages (response) {
     $('.chatwindow').html('');
     response.forEach(function(message){
@@ -35,12 +13,15 @@ function getMessages (response) {
         <div class="message" data-id="${message._id}">
           <h3>${message.name}</h3>
             <p>
-              ${message.body} sent at ${message.timestamp}
-            </p>
-          <input type="button" class="delete" value="delete">
-        </div>`;
-
+              ${message.body}
+            </p> ${message.timestamp}`;
+      if (currentLogin.name === message.name) {
+        buildDiv += '<input type="button" class="delete" value="delete"></div>';
+      } else {
+        buildDiv += '</div>';
+      }
       $('.chatwindow').append(buildDiv);
+
     });
     $('.delete').click(function(evt){
         let currentID = ($(evt.target).parent()[0].dataset.id);
@@ -56,7 +37,10 @@ function getMessages (response) {
 }
 
 $('#submitname').click(function(){
-    currentLogin = new Login($('#username')[0].value);
+    $('.login-page').addClass('hidden');
+    $('.chat-page').removeClass('hidden');
+    currentLogin.name = $('#username')[0].value;
+    console.log($('#username')[0].value);
     console.log(currentLogin);
     let interval = window.setInterval(function () {
       $.ajax({
@@ -65,12 +49,13 @@ $('#submitname').click(function(){
         dataType: 'json',
         success: getMessages
       });
-    }, 2000);
+    }, 1000);
 
 });
 
 $('#submitmessage').click(function(){
-    let currentMessage = new Message (currentLogin.name, $('#newmessage')[0].value, 'now');
+    let now = 'sent at ' + String(moment().format()).slice(11,16) + ' on ' + String(moment().format()).slice(5,10);
+    let currentMessage = new Message (currentLogin.name, $('#newmessage')[0].value, now);
     console.log(currentMessage);
     $.ajax({
         url: 'http://tiny-za-server.herokuapp.com/collections/benscoolchat',
