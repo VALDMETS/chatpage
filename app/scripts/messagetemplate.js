@@ -3,3 +3,5 @@ function Message (sender, body, timestamp) {
   this.body = body;
   this.timestamp = timestamp;
 }
+
+export default Message;
